@@ -7,8 +7,6 @@ public class JPAUtil {
 	
 	public static EntityManager getEM() {
 		return Persistence.createEntityManagerFactory("GameGrabber").createEntityManager();
-	}
-	
-	
+	}	
 
 }

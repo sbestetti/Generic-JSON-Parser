@@ -22,6 +22,8 @@
 	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/hibernate-release-5.2.2.Final/required/jboss-logging-3.3.0.Final.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/hibernate-release-5.2.2.Final/required/jsr250-api-1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/hibernate-release-5.2.2.Final/jpa-metamodel-generator/hibernate-jpamodelgen-5.2.2.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/JSONSimple/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/Resteasy Jackon Provider/jackson-core-2.8.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/Resteasy Jackon Provider/jackson-databind-2.8.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sergio/workspace/Jars/Resteasy Jackon Provider/jackson-annotations-2.8.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
