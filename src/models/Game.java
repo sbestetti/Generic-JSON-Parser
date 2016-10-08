@@ -1,5 +1,6 @@
 package models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class Game {
 		this.description = description;
 	}
 	public Date getReleaseDate() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
 		return releaseDate;
 	}
 	public void setReleaseDate(Date releaseDate) {

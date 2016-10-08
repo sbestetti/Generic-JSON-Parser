@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import models.Game;
+import util.DateParser;
 
 public class GameGetter extends TimerTask {
 	
@@ -65,8 +67,11 @@ public class GameGetter extends TimerTask {
 			}
 			game.setGenres(genresList);
 			game.setDescription(root.path("results").path("deck").asText());
+			game.setReleaseDate(DateParser.parse(root.path("results").path("original_release_date").asText()));
 			System.out.println("ID: " + game.getId());
 			System.out.println("Title: " + game.getTitle());
+			System.out.println("Description: " + game.getDescription());
+			System.out.println("Release date: " + new SimpleDateFormat("MMMM/YYYY").format(game.getReleaseDate()));
 			System.out.println("Platforms " + game.getPlataforms().toString());
 			System.out.println("Genres: " + game.getGenres().toString());
 			System.out.println("Waiting timeout interval\n");
