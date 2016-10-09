@@ -3,22 +3,19 @@ package runners;
 import java.util.Timer;
 
 import business.GameGetter;
+import dao.GameDao;
+import util.Logger;
 
 public class Runner {
 
 	public static void main(String[] args) {
 		
 		final Long startFrom;
-		
-		if (args.length > 0) {
-			 startFrom = Long.valueOf(args[0]);
-		} else {
-			startFrom = 1L;
-		}
-				
+		startFrom = new GameDao().getLastGameId() + 1;
+		System.out.println("WARNING: Starting from game number " + startFrom);
+		Logger.log("WARNING: Starting from game number " + startFrom);
 		Timer timer = new Timer();
 		timer.schedule(new GameGetter(startFrom), 0L, 20000L);
-
 	}
 
 }

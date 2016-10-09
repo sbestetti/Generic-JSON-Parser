@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
@@ -16,8 +15,12 @@ import java.util.TimerTask;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.GameDao;
+import dao.PlatformDao;
 import models.Game;
+import models.Platform;
 import util.DateParser;
+import util.Logger;
 
 public class GameGetter extends TimerTask {
 	
@@ -46,6 +49,15 @@ public class GameGetter extends TimerTask {
 			String jsonText = sb.toString();
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode root = mapper.readValue(jsonText, JsonNode.class);
+			int status = root.get("status_code").asInt();
+			switch (status) {
+				case 101:
+					Logger.log("WARNING: No game with ID " + nextId + ". Skipping");
+					nextId++;
+					return;
+				default:
+					break;					
+			}
 			game.setId(root.path("results").path("id").asLong());
 			String alias = root.path("results").path("aliases").asText();
 			String name = root.path("results").path("name").asText();
@@ -55,26 +67,25 @@ public class GameGetter extends TimerTask {
 				game.setTitle(alias);
 			}
 			JsonNode jsonPlatforms = root.path("results").get("platforms");
-			List<String> platformsList = new ArrayList<String>();
+			List<Platform> platformsList = new ArrayList<>();			
 			for (int i = 0; i < jsonPlatforms.size(); i++) {
-				platformsList.add(jsonPlatforms.get(i).get("name").asText());
+				Platform platform = new Platform();
+				platform.setId(jsonPlatforms.get(i).get("id").asLong());
+				platform.setName(jsonPlatforms.get(i).get("name").asText());
+				platformsList.add(platform);
 			}
+			new PlatformDao().addList(platformsList);
 			game.setPlataforms(platformsList);
 			JsonNode jsonGenres = root.path("results").get("genres");
 			List<String> genresList = new ArrayList<String>();
 			for (int i = 0; i < jsonGenres.size(); i++) {
 				genresList.add(jsonGenres.get(i).get("name").asText());
 			}
-			game.setGenres(genresList);
+//			game.setGenres(genresList);
 			game.setDescription(root.path("results").path("deck").asText());
-			game.setReleaseDate(DateParser.parse(root.path("results").path("original_release_date").asText()));
-			System.out.println("ID: " + game.getId());
-			System.out.println("Title: " + game.getTitle());
-			System.out.println("Description: " + game.getDescription());
-			System.out.println("Release date: " + new SimpleDateFormat("MMMM/YYYY").format(game.getReleaseDate()));
-			System.out.println("Platforms " + game.getPlataforms().toString());
-			System.out.println("Genres: " + game.getGenres().toString());
-			System.out.println("Waiting timeout interval\n");
+			game.setReleaseDate(DateParser.parse(root.path("results").path("original_release_date").asText(),game.getTitle()));
+			new GameDao().add(game);
+			Logger.log("INFO: Parse game ID " + game.getId() + " - " + game.getTitle());
 			nextId++;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

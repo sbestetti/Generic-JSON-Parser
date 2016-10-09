@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Game {
@@ -13,8 +14,12 @@ public class Game {
 	@Id
 	private Long id;
 	private String title;
-	private List<String> plataforms;
-	private List<String> genres;
+	
+	@ManyToMany
+	private List<Platform> platforms;
+	
+//	private List<String> genres;
+	
 	private String description;
 	private Date releaseDate;
 	
@@ -31,18 +36,18 @@ public class Game {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public List<String> getPlataforms() {
-		return plataforms;
+	public List<Platform> getPlataforms() {
+		return platforms;
 	}
-	public void setPlataforms(List<String> plataforms) {
-		this.plataforms = plataforms;
+	public void setPlataforms(List<Platform> plataforms) {
+		this.platforms = plataforms;
 	}
-	public List<String> getGenres() {
-		return genres;
-	}
-	public void setGenres(List<String> genres) {
-		this.genres = genres;
-	}
+//	public List<String> getGenres() {
+//		return genres;
+//	}
+//	public void setGenres(List<String> genres) {
+//		this.genres = genres;
+//	}
 	public String getDescription() {
 		return description;
 	}
